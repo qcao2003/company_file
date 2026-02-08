@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>编辑业主信息</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">物业公司 · 业主档案</p>
+          <h1>编辑业主信息</h1>
+          <p class="subtitle">更新房号、业主姓名与联系电话。</p>
+        </div>
+        <a class="link" href="{{ url_for('index') }}">返回列表</a>
+      </header>
+
+      <section class="card">
+        <form class="form-grid" method="post" action="{{ url_for('update_owner', owner_id=owner['id']) }}">
+          <label>
+            <span>房号</span>
+            <input name="room_number" value="{{ owner['room_number'] }}" required />
+          </label>
+          <label>
+            <span>业主姓名</span>
+            <input name="owner_name" value="{{ owner['owner_name'] }}" required />
+          </label>
+          <label>
+            <span>联系电话</span>
+            <input name="phone" value="{{ owner['phone'] }}" required />
+          </label>
+          <label>
+            <span>年龄</span>
+            <input name="age" type="number" min="0" value="{{ owner['age'] }}" required />
+          </label>
+          <label>
+            <span>物业费（元）</span>
+            <input name="property_fee" type="number" step="0.01" min="0" value="{{ owner['property_fee'] }}" required />
+          </label>
+          <label>
+            <span>欠款（元）</span>
+            <input name="arrears" type="number" step="0.01" min="0" value="{{ owner['arrears'] }}" required />
+          </label>
+          <button type="submit">保存修改</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
