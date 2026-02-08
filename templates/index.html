@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>业主信息管理</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">物业公司 · 业主档案</p>
+          <h1>业主信息管理</h1>
+          <p class="subtitle">记录房号、业主姓名与联系电话，支持新增、编辑与删除。</p>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2>新增业主</h2>
+        <form class="form-grid" method="post" action="{{ url_for('create_owner') }}">
+          <label>
+            <span>房号</span>
+            <input name="room_number" placeholder="例如：2栋-305" required />
+          </label>
+          <label>
+            <span>业主姓名</span>
+            <input name="owner_name" placeholder="例如：张三" required />
+          </label>
+          <label>
+            <span>联系电话</span>
+            <input name="phone" placeholder="例如：13800001111" required />
+          </label>
+          <button type="submit">保存业主信息</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="table-header">
+          <h2>业主列表</h2>
+          <span class="count">共 {{ owners | length }} 条记录</span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>房号</th>
+                <th>业主姓名</th>
+                <th>联系电话</th>
+                <th>录入时间</th>
+                <th class="actions">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for owner in owners %}
+              <tr>
+                <td>{{ owner['room_number'] }}</td>
+                <td>{{ owner['owner_name'] }}</td>
+                <td>{{ owner['phone'] }}</td>
+                <td>{{ owner['created_at'] }}</td>
+                <td class="actions">
+                  <a class="link" href="{{ url_for('edit_owner', owner_id=owner['id']) }}">编辑</a>
+                  <form method="post" action="{{ url_for('delete_owner', owner_id=owner['id']) }}" onsubmit="return confirm('确定要删除该业主信息吗？');">
+                    <button class="danger" type="submit">删除</button>
+                  </form>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" class="empty">暂无业主数据，请先新增。</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
